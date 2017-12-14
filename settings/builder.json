@@ -4,7 +4,6 @@
   "encryptJs": true,
   "excludeScenes": [],
   "includeAnySDK": false,
-  "includeGameroomSDK": false,
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
@@ -25,5 +24,6 @@
   "startScene": "eddc6626-5b0e-468d-b21f-546954818b1f",
   "title": "instant-games-example",
   "webOrientation": "auto",
-  "xxteaKey": "81a5aca1-c166-46"
+  "xxteaKey": "81a5aca1-c166-46",
+  "zipCompressJs": true
 }

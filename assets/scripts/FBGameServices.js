@@ -43,11 +43,10 @@ cc.Class({
         if (typeof FB === 'undefined') return;
         FB.ui({
             method: 'share',
-            display: 'popup',
             href: 'https://developers.facebook.com/docs/',
         }, (response) => {
             console.log(response);
-    });
+        });
     },
 
     onAppRequests () {
