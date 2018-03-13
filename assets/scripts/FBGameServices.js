@@ -1,3 +1,6 @@
+// These services are based on the Facebook SDK for JavaScript.
+// You should load https://connect.facebook.net/en_US/all.js before using the FB API.
+ 
 cc.Class({
     extends: cc.Component,
 
@@ -6,7 +9,10 @@ cc.Class({
     },
 
     start () {
-        if (typeof FB === 'undefined') return;
+        if (typeof FB === 'undefined') {
+            cc.error('These services are based on the Facebook SDK for JavaScript. ' + 
+                    'You should load https://connect.facebook.net/en_US/all.js before using the FB API.');
+        };
         FB.init({
             appId            : '1901989576734054',
             autoLogAppEvents : true,
