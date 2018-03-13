@@ -1,6 +1,6 @@
-// Facebook 官方 API 传送门：https://developers.facebook.com/docs/games/instant-games/sdk#changelog
+// Facebook 官方 API 传送门：https://developers.facebook.com/docs/games/instant-games/sdk
 // 使用 Instant Games API 自定义组件（通常用户会自己自身需求去使用 API）
-// 目前这里只是用了一下基础 API
+// 目前这里只是用了以下基础 API
 // 玩家信息
 // 1. FBInstant.player.getName
 // 2. FBInstant.player.getID
@@ -25,6 +25,7 @@ cc.Class({
 
     start () {
         if (typeof FBInstant === 'undefined') return;
+        
         // 显示玩家信息
         // 设置昵称
         this.nick_name.string = 'Name:' + FBInstant.player.getName();
