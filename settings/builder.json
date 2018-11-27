@@ -20,10 +20,28 @@
   },
   "packageName": "org.cocos2d.instant-games-example",
   "privateKey": "",
-  "renderMode": "0",
   "startScene": "eddc6626-5b0e-468d-b21f-546954818b1f",
   "title": "instant-games-example",
   "webOrientation": "auto",
   "xxteaKey": "81a5aca1-c166-46",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "wechatgame": {
+    "appid": "wx6ac3f5090a6b99c5",
+    "orientation": "portrait",
+    "REMOTE_SERVER_ROOT": "",
+    "subContext": ""
+  },
+  "qqplay": {
+    "orientation": "portrait",
+    "REMOTE_SERVER_ROOT": ""
+  },
+  "fb-instant-games": {},
+  "android-instant": {
+    "REMOTE_SERVER_ROOT": "",
+    "pathPattern": "",
+    "scheme": "https",
+    "host": "",
+    "skipRecord": false,
+    "recordPath": ""
+  }
 }

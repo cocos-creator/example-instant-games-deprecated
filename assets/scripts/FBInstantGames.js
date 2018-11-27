@@ -20,12 +20,14 @@ cc.Class({
         avatar: cc.Sprite,      // 头像
         nick_name: cc.Label,    // 昵称
         id: cc.Label,           // ID
-        info: cc.Label          // 其他信息
+        info: cc.Label,         // 其他信息
+        camera: cc.Camera       // 截屏摄像机
     },
 
     start () {
+        this.camera.active = false;
         if (typeof FBInstant === 'undefined') return;
-        
+
         // 显示玩家信息
         // 设置昵称
         this.nick_name.string = 'Name:' + FBInstant.player.getName();
@@ -72,40 +74,35 @@ cc.Class({
 
     // 截屏返回 iamge base6，用于 Share
     getImgBase64 () {
-        let sp = cc.find('Canvas/New Sprite(Splash)').getComponent(cc.Sprite);
-
-        let target = cc.find('Canvas');
-        let width = 960, height = 640;
-        let renderTexture = new cc.RenderTexture(width, height);
-        renderTexture.begin();
-        target._sgNode.visit();
-        renderTexture.end();
-        //
+        // Getting view rect size.
+        let visibleSize = cc.view.getVisibleSize();
+        let width = visibleSize.width;
+        let height = visibleSize.height;
+        // Creating a new renderTexture.
+        this.camera.active = true;
+        let renderTexture = new cc.RenderTexture();
+        let gl = cc.game._renderContext;
+        renderTexture.initWithSize(cc.visibleRect.width, cc.visibleRect.height, gl.STENCIL_INDEX8);
+        this.camera.targetTexture = renderTexture;
+        // Creating a new canvas.
         let canvas = document.createElement('canvas');
         let ctx = canvas.getContext('2d');
         canvas.width = width;
         canvas.height = height;
-        if (cc._renderType === cc.game.RENDER_TYPE_CANVAS) {
-            let texture = renderTexture.getSprite().getTexture();
-            let image = texture.getHtmlElementObj();
-            ctx.drawImage(image, 0, 0);
+        this.camera.render();
+        // Getting pixels.
+        let data = new Uint8Array(width * height * 4);
+        renderTexture.readPixels(data);
+        // Input the data into the new canvas.
+        let rowBytes = width * 4;
+        for (let row = 0; row < height; row++) {
+            let srow = height - 1 - row;
+            let data2 = new Uint8ClampedArray(data.buffer, srow * width * 4, rowBytes);
+            let imageData = new ImageData(data2, width, 1);
+            ctx.putImageData(imageData, 0, row);
         }
-        else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL) {
-            let buffer = gl.createFramebuffer();
-            gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
-            let texture = renderTexture.getSprite().getTexture()._glID;
-            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-            let data = new Uint8Array(width * height * 4);
-            gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, data);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-            let rowBytes = width * 4;
-            for (let row = 0; row < height; row++) {
-                let srow = height - 1 - row;
-                let data2 = new Uint8ClampedArray(data.buffer, srow * width * 4, rowBytes);
-                let imageData = new ImageData(data2, width, 1);
-                ctx.putImageData(imageData, 0, row);
-            }
-        }
+
+        this.camera.active = false;
         return canvas.toDataURL('image/png');
     }
 });
